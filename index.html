@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbf5f5" />
+    <meta
+      name="description"
+      content="欢迎来到占轩颖的小小世界。21 岁，文员，喜欢王菲和兔子。在这里分享实用工具、工作笔记与生活里的小美好。"
+    />
+    <title>占轩颖 · 小小世界，慢慢喜欢</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    <link rel="preload" as="image" href="./assets/bunny-hero.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳转到正文</a>
+    <svg
+      class="icon-library"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <symbol id="i-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h14m-6-6 6 6-6 6" />
+      </symbol>
+      <symbol id="i-up-right" viewBox="0 0 24 24">
+        <path d="M6 18 18 6M6 6h12v12" />
+      </symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24">
+        <path
+          d="M20.8 4.6a5.6 5.6 0 0 0-7.9 0L12 5.5l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.5a5.6 5.6 0 0 0 0-7.9Z"
+        />
+      </symbol>
+      <symbol id="i-sparkle" viewBox="0 0 24 24">
+        <path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4Z" />
+      </symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="13" r="8" />
+        <path d="M12 9v4l2 2M9 2h6M12 2v3m6 1 2 2" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="4" />
+        <path d="m8 12 3 3 5-6" />
+      </symbol>
+      <symbol id="i-text" viewBox="0 0 24 24">
+        <path d="M4 5h16M12 5v14m-4 0h8M4 8V5m16 3V5" />
+      </symbol>
+      <symbol id="i-music" viewBox="0 0 24 24">
+        <path d="M9 18V5l11-2v13M9 8l11-2" />
+        <ellipse cx="6" cy="18" rx="3" ry="2" />
+        <ellipse cx="17" cy="16" rx="3" ry="2" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M6 18 18 6" />
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 24 24">
+        <path
+          d="M12 6c-3-3-7-3-10-2v15c4-1 7 0 10 2m0-15c3-3 7-3 10-2v15c-4-1-7 0-10 2V6Z"
+        />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#home" aria-label="占轩颖的主页">
+          <img src="./assets/favicon.svg" alt="" width="38" height="38" />
+          <span>轩颖的小世界<span class="brand-dot">.</span></span>
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav"
+          aria-label="打开导航"
+        >
+          <span></span><span></span>
+        </button>
+        <nav id="main-nav" class="main-nav" aria-label="主导航">
+          <a class="active" href="#home" aria-current="location">首页</a>
+          <a href="#about">关于我</a>
+          <a href="#tools">实用工具</a>
+          <a href="#notes">博客笔记</a>
+        </nav>
+        <span class="header-greeting"
+          ><svg class="icon"><use href="#i-sparkle" /></svg> 很高兴遇见你</span
+        >
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero container" id="home" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <span class="eyebrow hero-eyebrow"
+            ><span class="little-line"></span> WELCOME TO MY LITTLE WORLD</span
+          >
+          <h1 id="hero-title">
+            嗨，我是<span class="name"
+              >占轩颖<span class="name-star" aria-hidden="true">✳</span></span
+            >
+          </h1>
+          <p class="hero-subtitle">把平凡的日子，过成粉色的诗。</p>
+          <p class="hero-description">
+            一名认真生活的文员，一个喜欢王菲的女孩。<br />和小兔子一起，收藏日常里的每一份温柔。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#about"
+              >认识一下我 <svg class="icon"><use href="#i-arrow" /></svg
+            ></a>
+            <a class="text-link" href="#notes"
+              >逛逛我的笔记 <svg class="icon"><use href="#i-up-right" /></svg
+            ></a>
+          </div>
+          <div class="hero-footnote">
+            <svg class="icon"><use href="#i-heart" /></svg>
+            保持热爱，慢慢成为自己喜欢的样子。
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="orbit-label" aria-hidden="true">
+            A LITTLE SOFTNESS, EVERY DAY
+          </div>
+          <div class="hero-image-frame">
+            <img
+              class="hero-image"
+              src="./assets/bunny-hero.png"
+              width="1254"
+              height="1254"
+              alt="一只软绒绒的白兔坐在粉色软垫上，身旁有温柔的阳光和樱花"
+              fetchpriority="high"
+            />
+          </div>
+          <span class="floating-star star-one" aria-hidden="true">✦</span>
+          <span class="floating-star star-two" aria-hidden="true">✧</span>
+          <div class="rabbit-note">
+            <span class="rabbit-note-icon" aria-hidden="true">♡</span>
+            <div><strong>今日份的可爱</strong><span>由小兔子承包啦</span></div>
+            <span class="note-sparkle" aria-hidden="true">✧</span>
+          </div>
+          <span class="image-caption">soft heart, little joys.</span>
+        </div>
+      </section>
+
+      <div class="container personal-strip" aria-label="个人关键词">
+        <span class="strip-label">一些关于我的关键词</span>
+        <span><span aria-hidden="true">✿</span> 21 岁，正当美好</span>
+        <span
+          ><svg class="icon"><use href="#i-book" /></svg> 文员的有序日常</span
+        >
+        <span
+          ><svg class="icon"><use href="#i-music" /></svg> 耳机里是王菲</span
+        >
+        <span
+          ><svg class="icon"><use href="#i-heart" /></svg> 兔子忠实爱好者</span
+        >
+      </div>
+
+      <section
+        class="section container"
+        id="about"
+        aria-labelledby="about-title"
+      >
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow">01 / A LITTLE ABOUT ME</span>
+            <h2 id="about-title">
+              平凡的我，也有小小的闪光<span class="pink-dot">.</span>
+            </h2>
+          </div>
+          <span class="section-handwriting">nice to meet you ♡</span>
+        </div>
+        <div class="about-grid">
+          <article class="about-card reveal">
+            <div class="about-card-top">
+              <span class="small-label">这是我的自我介绍</span
+              ><svg class="icon"><use href="#i-sparkle" /></svg>
+            </div>
+            <h3>工作认真一点，<br />生活可爱一点。</h3>
+            <p>
+              你好呀，我是占轩颖，今年 21 岁，是一名文员。<br
+                class="desktop-break"
+              />喜欢在有条不紊的工作之外，给生活留一点柔软的空间。
+            </p>
+            <p>
+              喜欢王菲的声音，也喜欢兔子毛茸茸的可爱。<br
+                class="desktop-break"
+              />这个小小的主页，装着我的日常、笔记，和一些顺手的小工具。
+            </p>
+            <div class="profile-tags">
+              <span>占轩颖</span><span>21 岁 · 女生</span><span>职业：文员</span
+              ><span>喜欢简单，也喜欢可爱</span>
+            </div>
+          </article>
+          <aside class="music-card reveal" aria-labelledby="music-title">
+            <div class="music-card-top">
+              <span class="eyebrow">MY MUSIC CORNER</span
+              ><svg class="icon"><use href="#i-music" /></svg>
+            </div>
+            <div class="music-art" aria-hidden="true">
+              <span class="music-quote">♪</span
+              ><span class="music-name">Faye<br /><em>Wong.</em></span
+              ><span class="music-art-star">✦</span>
+            </div>
+            <div class="music-bottom">
+              <div>
+                <span class="small-label">最喜欢的声音</span>
+                <h3 id="music-title">王菲 <span>Faye Wong</span></h3>
+              </div>
+              <svg class="icon heart-icon"><use href="#i-heart" /></svg>
+            </div>
+            <p>留一点时间，给喜欢的音乐。</p>
+            <a
+              class="music-link"
+              href="https://music.163.com/#/search/m/?s=%E7%8E%8B%E8%8F%B2&amp;type=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              >去网易云音乐听王菲
+              <svg class="icon"><use href="#i-up-right" /></svg
+            ></a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="tools-section" id="tools" aria-labelledby="tools-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <span class="eyebrow">02 / MAKE LIFE A LITTLE EASIER</span>
+              <h2 id="tools-title">
+                顺手的小工具<span class="pink-dot">.</span>
+              </h2>
+              <p>把琐碎交给工具，把时间留给喜欢的事。</p>
+            </div>
+            <span class="section-side-note"
+              >一点效率，一点从容 <span aria-hidden="true">↘</span></span
+            >
+          </div>
+          <div class="tools-grid">
+            <button
+              class="tool-card reveal"
+              type="button"
+              data-tool="focus"
+              aria-haspopup="dialog"
+            >
+              <span class="tool-icon pink"
+                ><svg class="icon"><use href="#i-clock" /></svg></span
+              ><span class="tool-number">01</span>
+              <h3>专注时光</h3>
+              <p>
+                专心 25 分钟，再给自己一个小休息。<br />一件一件，慢慢做好。
+              </p>
+              <span class="tool-bottom"
+                ><span>番茄时钟</span
+                ><span class="circle-arrow"
+                  ><svg class="icon"><use href="#i-arrow" /></svg></span
+              ></span>
+            </button>
+            <button
+              class="tool-card reveal"
+              type="button"
+              data-tool="todo"
+              aria-haspopup="dialog"
+            >
+              <span class="tool-icon lavender"
+                ><svg class="icon"><use href="#i-check" /></svg></span
+              ><span class="tool-number">02</span>
+              <h3>今日小清单</h3>
+              <p>记下要做的事，打勾的那一刻，<br />也是一份小小的成就感。</p>
+              <span class="tool-bottom"
+                ><span>待办事项</span
+                ><span class="circle-arrow"
+                  ><svg class="icon"><use href="#i-arrow" /></svg></span
+              ></span>
+            </button>
+            <button
+              class="tool-card reveal"
+              type="button"
+              data-tool="text"
+              aria-haspopup="dialog"
+            >
+              <span class="tool-icon peach"
+                ><svg class="icon"><use href="#i-text" /></svg></span
+              ><span class="tool-number">03</span>
+              <h3>文字小助手</h3>
+              <p>写通知、整理文案时，<br />让每一个字都心中有数。</p>
+              <span class="tool-bottom"
+                ><span>字数统计</span
+                ><span class="circle-arrow"
+                  ><svg class="icon"><use href="#i-arrow" /></svg></span
+              ></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section notes-section container"
+        id="notes"
+        aria-labelledby="notes-title"
+      >
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow">03 / NOTES & LITTLE THINGS</span>
+            <h2 id="notes-title">
+              写下来，就不会忘记<span class="pink-dot">.</span>
+            </h2>
+            <p>一些工作方法，也留一点生活灵感。</p>
+          </div>
+          <span class="notes-count"
+            >3 篇示例笔记 <svg class="icon"><use href="#i-book" /></svg
+          ></span>
+        </div>
+        <div class="notes-grid">
+          <button
+            class="note-card reveal"
+            type="button"
+            data-note="office"
+            aria-haspopup="dialog"
+          >
+            <span class="note-cover cover-office"
+              ><span class="cover-label">WORK SMARTER, LIVE SLOWER</span
+              ><span class="cover-title"
+                >井井有条<span class="cover-plus" aria-hidden="true"
+                  >＋</span
+                ></span
+              ><span class="cover-bottom"
+                ><span>让工作轻一点</span
+                ><svg class="icon"><use href="#i-check" /></svg></span></span
+            ><span class="note-category"
+              >办公小记 <span>· 3 分钟阅读</span></span
+            >
+            <h3>给忙碌的一天，一点秩序感</h3>
+            <p>从一份清单开始，让琐碎的工作变得清晰。</p>
+            <span class="note-read"
+              >翻开这篇笔记 <svg class="icon"><use href="#i-up-right" /></svg
+            ></span>
+          </button>
+          <button
+            class="note-card reveal"
+            type="button"
+            data-note="music"
+            aria-haspopup="dialog"
+          >
+            <span class="note-cover cover-music"
+              ><span class="cover-label">A SOUNDTRACK FOR THE EVERYDAY</span
+              ><span class="cover-title"
+                >留白时刻<span class="cover-note" aria-hidden="true"
+                  >♪</span
+                ></span
+              ><span class="cover-bottom"
+                ><span>把时间调成慢速</span
+                ><svg class="icon"><use href="#i-music" /></svg></span></span
+            ><span class="note-category"
+              >生活灵感 <span>· 2 分钟阅读</span></span
+            >
+            <h3>在音乐里，给自己一个休息</h3>
+            <p>偶尔停一停，安安静静地听完一首歌。</p>
+            <span class="note-read"
+              >翻开这篇笔记 <svg class="icon"><use href="#i-up-right" /></svg
+            ></span>
+          </button>
+          <button
+            class="note-card reveal"
+            type="button"
+            data-note="journal"
+            aria-haspopup="dialog"
+          >
+            <span class="note-cover cover-journal"
+              ><span class="cover-label">COLLECT THE LITTLE JOYS</span
+              ><span class="cover-title"
+                >微小美好<span class="cover-flower" aria-hidden="true"
+                  >✳</span
+                ></span
+              ><span class="cover-bottom"
+                ><span>普通日子也值得记录</span
+                ><svg class="icon"><use href="#i-heart" /></svg></span></span
+            ><span class="note-category"
+              >记录日常 <span>· 2 分钟阅读</span></span
+            >
+            <h3>不用很特别，也值得被记住</h3>
+            <p>用三行小日记，收藏生活里的小小幸福。</p>
+            <span class="note-read"
+              >翻开这篇笔记 <svg class="icon"><use href="#i-up-right" /></svg
+            ></span>
+          </button>
+        </div>
+        <p class="sample-note">
+          这里先放了几篇示例笔记，留给未来的自己慢慢续写。
+        </p>
+      </section>
+
+      <section class="goodbye container reveal" aria-label="给访客的话">
+        <span class="eyebrow">A LITTLE WISH FOR YOU</span>
+        <p>
+          愿你今天，也有一点<span>小开心</span
+          ><span class="goodbye-flower" aria-hidden="true">✳</span>
+        </p>
+        <span>谢谢你路过我的小世界，记得好好照顾自己。</span>
+      </section>
+    </main>
+
+    <footer class="container site-footer">
+      <a class="brand footer-brand" href="#home"
+        ><img src="./assets/favicon.svg" alt="" width="30" height="30" /><span
+          >轩颖的小世界.</span
+        ></a
+      >
+      <p>
+        © <span id="year">2026</span> 占轩颖
+        <span class="footer-separator">/</span> 用心生活，慢慢生长
+      </p>
+      <a class="back-to-top" href="#home"
+        >回到顶部 <span aria-hidden="true">↑</span></a
+      >
+    </footer>
+
+    <dialog
+      id="content-dialog"
+      class="content-dialog"
+      aria-labelledby="dialog-title"
+    >
+      <div class="dialog-shell">
+        <button class="dialog-close" type="button" aria-label="关闭弹窗">
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+        <div id="dialog-body"></div>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
