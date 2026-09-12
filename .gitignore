@@ -9,3 +9,6 @@ artifacts/
 supabase/.temp/
 supabase/.branches/
 _site/
+.wrangler/
+.dev.vars
+.dev.vars.*

@@ -22,6 +22,12 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 打开 http://127.0.0.1:4173 。也可以直接打开 `index.html`，本地存储会受浏览器的本地文件策略影响。
 
+## 发布到 Cloudflare
+
+执行 `npm ci` 安装部署工具，然后运行 `npx wrangler login` 完成本机授权。运行 `npm run deploy:cloudflare` 会检查博客功能、构建公开文件并部署到 Cloudflare Workers Static Assets。
+
+线上地址以部署成功后 Wrangler 返回的地址为准。完整步骤见 [Cloudflare 部署说明](docs/cloudflare-setup.md)。当前部署的是已有个人主页；Next.js / Payload 在线写作后台尚未接入。
+
 ## 发布到 GitHub Pages
 
 项目已提供 `.github/workflows/pages.yml`，发布方式：
