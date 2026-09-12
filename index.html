@@ -12,6 +12,9 @@
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
     <link rel="preload" as="image" href="./assets/bunny-hero.png" />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./supabase-config.js" defer></script>
+    <script src="./blog-data.js" defer></script>
+    <script src="./blog.js" defer></script>
     <script src="./app.js" defer></script>
   </head>
   <body>
@@ -307,7 +310,8 @@
             <p>一些工作方法，也留一点生活灵感。</p>
           </div>
           <span class="notes-count"
-            >3 篇示例笔记 <svg class="icon"><use href="#i-book" /></svg
+            ><span id="notes-count-label">3 篇示例笔记</span>
+            <svg class="icon"><use href="#i-book" /></svg
           ></span>
         </div>
         <div class="notes-grid">
@@ -384,9 +388,32 @@
             ></span>
           </button>
         </div>
-        <p class="sample-note">
+        <p
+          class="sample-note"
+          id="notes-status"
+          role="status"
+          aria-live="polite"
+        >
           这里先放了几篇示例笔记，留给未来的自己慢慢续写。
         </p>
+        <div class="notes-actions">
+          <button
+            class="button button-secondary"
+            id="notes-retry"
+            type="button"
+            hidden
+          >
+            重新打开笔记
+          </button>
+          <button
+            class="button button-secondary"
+            id="notes-more"
+            type="button"
+            hidden
+          >
+            再翻几篇笔记
+          </button>
+        </div>
       </section>
 
       <section class="goodbye container reveal" aria-label="给访客的话">

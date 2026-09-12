@@ -316,32 +316,82 @@ function showText() {
   input.focus();
 }
 
-const notes = {
-  office: {
-    tag: "办公小记 · 3 分钟阅读",
-    title: "给忙碌的一天，一点秩序感",
-    content: `<p>工作中的很多事情并不复杂，只是容易同时涌过来。给它们安排一个位置，心里也会轻松一点。这是一份可以直接参考的日常整理方法。</p><h3>01 · 先写下来，再开始</h3><p>开始工作前，花五分钟列出今天的事项。先标记有明确截止时间的任务，再选出一到三件需要优先完成的事。临时收到的安排也放进同一张清单里。</p><h3>02 · 让文件名替你记忆</h3><p>试试「日期_事项_版本」的命名方式。例如「2026-09-11_会议纪要_v1」。一个项目放在同一个文件夹，已确认的版本再单独归档，减少反复查找。</p><h3>03 · 发出前，多看一眼</h3><ul><li>收件人、日期和时间是否正确？</li><li>需要的附件是否已经附上？</li><li>文件中的姓名、数字与版本是否一致？</li></ul><h3>04 · 留五分钟给明天</h3><p>结束工作前，勾掉已完成的事项，把未完成事项的下一步写具体。比起「处理文件」，「核对表格中本周的三条新增记录」更容易开始。</p><blockquote>有条不紊，不是把每一分钟填满，而是知道下一步要做什么。</blockquote>`,
-  },
-  music: {
-    tag: "生活灵感 · 2 分钟阅读",
-    title: "在音乐里，给自己一个休息",
-    content: `<p>休息不一定要等到一个完整的周末。一首歌的时间，也可以成为忙碌日常中的一小块留白。</p><h3>把这一首歌听完</h3><p>选一首喜欢的歌，先把手边的消息放一放。让音乐成为此刻唯一要做的事，不急着切换，也不用同时完成其他任务。</p><h3>留一个轻松的听歌角落</h3><p>找个舒服的位置，把音量调到舒适的程度，给自己倒一杯水。可以听王菲，也可以换一首今天刚好想听的歌。喜欢就是足够好的理由。</p><h3>给当下留一个词</h3><p>听完以后，用一个词记下此刻的感觉：轻盈、平静、想念，或者什么也不写。音乐不需要交作业，这个小小的停顿也不用有什么成果。</p><blockquote>有时候，把生活的声音调小一点，就更容易听见自己。</blockquote>`,
-  },
-  journal: {
-    tag: "记录日常 · 2 分钟阅读",
-    title: "不用很特别，也值得被记住",
-    content: `<p>日记并不一定要写很长，也不用等到发生一件大事才开始。一句随手记下的话，就能替今天留一扇小小的窗。</p><h3>从三行开始</h3><ul><li>今天看到的小美好：一束光、一片好看的云，或一只可爱的小兔子。</li><li>今天做成的一件事：再小也可以，它是你认真生活的痕迹。</li><li>想对自己说的一句话：温柔一点，不用急着评价。</li></ul><h3>不追求连续打卡</h3><p>有空就写，想起来就记录。忘了一天不需要补上，停了一阵也可以从今天重新开始。记录是为了保存生活里的感受，不是给自己增加一份任务。</p><h3>偶尔回头看看</h3><p>翻开以前留下的只言片语，会发现那些当时很普通的片刻也有自己的光。原来，小小的日子一直在认真地往前走。</p><blockquote>把一点美好留在纸上，平凡的一天就有了自己的书签。</blockquote>`,
-  },
-};
+const blog = window.XuanyingBlog;
+const notesGrid = $(".notes-grid");
+const notesCount = $("#notes-count-label");
+const notesStatus = $("#notes-status");
+const notesRetry = $("#notes-retry");
+const notesMore = $("#notes-more");
+let blogPosts = new Map();
+let nextBlogOffset = 0;
+let blogLoading = false;
 
-$$("[data-note]").forEach((button) =>
-  button.addEventListener("click", () => {
-    const note = notes[button.dataset.note];
-    openDialog(
-      `<span class="eyebrow">${note.tag}</span><h2 id="dialog-title" class="dialog-title">${note.title}</h2><span class="article-sample">示例笔记</span><article class="article-body">${note.content}</article><p class="article-footer">这是主页的示例内容，可以替换成轩颖自己的文章。</p>`,
-    );
-  }),
-);
+function renderNotes(posts, append = false) {
+  if (!append) blogPosts.clear();
+  posts.forEach((post) => blogPosts.set(post.slug, post));
+  notesGrid.innerHTML = [...blogPosts.values()].map(blog.renderCard).join("");
+  const allSamples =
+    blogPosts.size && [...blogPosts.values()].every((post) => post.is_sample);
+  notesCount.textContent = `${blogPosts.size} 篇${allSamples ? "示例" : ""}笔记`;
+  notesStatus.textContent = !blogPosts.size
+    ? "新笔记还在路上，过些时候再来看看吧。"
+    : allSamples
+      ? "这里先放了几篇示例笔记，留给未来的自己慢慢续写。"
+      : "把日子里的小事，慢慢写成自己的故事。";
+}
+
+async function fetchNotes() {
+  if (blogLoading) return;
+  blogLoading = true;
+  notesGrid.setAttribute("aria-busy", "true");
+  notesMore.disabled = true;
+  notesRetry.hidden = true;
+  notesStatus.textContent = "正在翻开笔记…";
+  if (nextBlogOffset === 0) {
+    notesGrid.replaceChildren();
+    blogPosts.clear();
+    notesCount.textContent = "正在读取";
+  }
+  try {
+    const result = await blog.loadPosts(window.SUPABASE_CONFIG, nextBlogOffset);
+    renderNotes(result.posts, nextBlogOffset > 0);
+    nextBlogOffset += result.posts.length;
+    notesMore.hidden = !result.hasMore;
+    if (result.hasMore)
+      notesCount.textContent = `已展示 ${blogPosts.size} 篇笔记`;
+  } catch {
+    notesStatus.textContent = blogPosts.size
+      ? "后面的笔记暂时没能打开，稍后再试试吧。"
+      : "笔记暂时没能打开，稍后再试试吧。";
+    if (!blogPosts.size) notesCount.textContent = "等一会儿再来";
+    notesRetry.hidden = false;
+    notesMore.hidden = true;
+  } finally {
+    blogLoading = false;
+    notesGrid.setAttribute("aria-busy", "false");
+    notesMore.disabled = false;
+  }
+}
+
+notesRetry.addEventListener("click", fetchNotes);
+notesMore.addEventListener("click", fetchNotes);
+notesGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-note]");
+  if (!button) return;
+  const post = blogPosts.get(button.dataset.note);
+  if (!post) return;
+  openDialog(
+    `<span class="eyebrow">${blog.escapeHTML(post.category)} · ${blog.escapeHTML(post.reading_minutes)} 分钟阅读</span><h2 id="dialog-title" class="dialog-title">${blog.escapeHTML(post.title)}</h2>${post.is_sample ? '<span class="article-sample">示例笔记</span>' : ""}<article class="article-body">${blog.renderBody(post.body)}</article><p class="article-footer">${post.is_sample ? "这是主页的示例内容，可以替换成轩颖自己的文章。" : "谢谢你，愿意听我分享这些小事。"}</p>`,
+  );
+});
+
+try {
+  if (blog.parseConfig(window.SUPABASE_CONFIG)) fetchNotes();
+  else renderNotes(window.SAMPLE_BLOG_POSTS);
+} catch {
+  fetchNotes();
+}
+
 const toolHandlers = { focus: showFocus, todo: showTodos, text: showText };
 $$("[data-tool]").forEach((button) =>
   button.addEventListener("click", () => toolHandlers[button.dataset.tool]()),
