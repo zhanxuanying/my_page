@@ -27,3 +27,11 @@
 - 测试用浏览器视口已恢复，测试页面放在被忽略的 `.playwright/` 目录，未纳入发布文件。
 
 GitHub Pages 工作流会重新运行同一套测试，再发布明确列出的静态文件和本地资源。
+
+## GitHub Pages 发布
+
+- 已推送代码提交 `1be0c0cbddda9ed8ef820b96e1380f9bf74aa71a`。
+- [部署工作流 34661602103](https://github.com/zhanxuanying/my_page/actions/runs/34661602103) 状态为 `completed / success`。
+- 线上 `index.html`、`styles.css`、`app.js`、`blog.js`、`blog-data.js`、`supabase-config.js` 均返回 HTTP 200，SHA-256 与本地一致。
+- 使用线上域名 Origin 请求实际 Supabase Data API，HTTP 200、CORS 允许，读取到预期 3 篇文章。
+- 本地浏览器已验证真实 Supabase 连接；线上页面的额外浏览器复查因浏览器工具超时未完成，线上静态文件和 API 通过上述 HTTP 检查核验。

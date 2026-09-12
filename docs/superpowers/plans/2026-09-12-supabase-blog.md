@@ -25,4 +25,4 @@
 - [x] Update `app.js` and `index.html` to load articles, render cards and dialogs, support loading/empty/retry states and load more. Add small matching styles in `styles.css`.
 - [x] Update the Pages artifact allowlist to include only the new public assets. Add automated tests before deployment. Document editing/publishing, setup, permissions and credentials in `docs/supabase-setup.md` and `README.md`.
 - [x] Once login is available, inspect projects and use an appropriate free project; apply the migration, obtain only its public key, and verify the public API's read-only behavior.
-- [ ] Run `npm test`, JavaScript syntax checks, browser desktop/mobile checks, and `git diff --check`. Push and verify Pages after real configuration is valid.
+- [x] Run `npm test`, JavaScript syntax checks, browser desktop/mobile checks, and `git diff --check`. Push and verify Pages after real configuration is valid.
