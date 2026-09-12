@@ -2,6 +2,8 @@
 
 当前个人主页可以直接部署到 Cloudflare Workers Static Assets。文章继续从现有 Supabase 读取，页面不需要动态 Worker、D1 或 R2。
 
+已部署地址：[轩颖的小世界](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/)。Worker 名称为 `xuanying-homepage`。
+
 这份配置部署的是当前 HTML / CSS / JavaScript 主页。Next.js 和 Payload 在线写作后台属于后续升级，尚未接入本项目。
 
 ## 授权与部署
@@ -17,7 +19,9 @@ npm run deploy:cloudflare
 
 `wrangler login` 会打开 Cloudflare 浏览器授权页。仅登录 Cloudflare 网站不会自动授权本机 CLI。完成后，`whoami` 应显示预期账号。
 
-部署命令先运行已有博客与数据库权限测试，再构建和上传。部署完成后使用 Wrangler 返回的 HTTPS 地址；账号的 Workers 子域名确认之前，不预先假设线上地址。
+部署命令先运行已有博客与数据库权限测试，再构建和上传到同一个 Worker。
+
+更新网页代码后重新执行 `npm run deploy:cloudflare`。Supabase 中的文章编辑会由网页直接读取，无须重新部署。当前 Cloudflare 使用 Wrangler 发布，尚未配置 GitHub 推送后自动发布；仓库现有 GitHub Actions 仍部署到 GitHub Pages。
 
 此命令不创建付费订阅。静态资源请求的计费与限额以 [Workers Static Assets 官方文档](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) 为准。
 
@@ -41,7 +45,7 @@ npm run preview:cloudflare
 
 完整在线写作后台需要新增应用代码、管理员权限与内容迁移。部署 Next.js 动态应用时，需要调整为相应的 Workers 构建输出，不能直接将 `.next/` 当作静态目录上传。
 
-Payload 的官方 Cloudflare 模板使用 OpenNext。官方模板仍提示需要付费 Workers，但 Cloudflare 最新限制已调整；实际运行适配、启动时间和免费 CPU 限额需要验证，不能仅凭构建成功承诺免费稳定运行。
+Payload 的官方 Cloudflare 模板使用 OpenNext。隔离验证项目已在当前账号成功部署，并通过基本认证接口检查；完整在线编辑、Supabase PostgreSQL 适配和免费额度下的持续运行仍需进一步验证。详见 [实际验证记录](cloudflare-verification.md)。
 
 - [Cloudflare Next.js 部署文档](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/)
 - [Payload 官方 Cloudflare 模板](https://github.com/payloadcms/payload/tree/main/templates/with-cloudflare-d1)

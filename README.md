@@ -2,6 +2,8 @@
 
 占轩颖的个人主页。粉色、兔子、温柔的动态效果，以及实用的日常小工具。
 
+在线访问：[轩颖的小世界 · Cloudflare](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/)。
+
 ## 页面内容
 
 - 个人介绍：21 岁、女生、文员，喜欢王菲和兔子。
@@ -26,7 +28,9 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 执行 `npm ci` 安装部署工具，然后运行 `npx wrangler login` 完成本机授权。运行 `npm run deploy:cloudflare` 会检查博客功能、构建公开文件并部署到 Cloudflare Workers Static Assets。
 
-线上地址以部署成功后 Wrangler 返回的地址为准。完整步骤见 [Cloudflare 部署说明](docs/cloudflare-setup.md)。当前部署的是已有个人主页；Next.js / Payload 在线写作后台尚未接入。
+当前 Cloudflare 线上地址见上方链接。后续修改页面后执行 `npm run deploy:cloudflare` 更新；在 Supabase 修改文章后无须重新部署。Cloudflare 尚未连接 GitHub 自动部署，现有 GitHub Actions 仍负责 GitHub Pages。
+
+完整步骤见 [Cloudflare 部署说明](docs/cloudflare-setup.md)。当前部署的是已有个人主页；Next.js / Payload 在线写作后台尚未接入。
 
 ## 发布到 GitHub Pages
 
