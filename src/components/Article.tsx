@@ -1,0 +1,12 @@
+import type { Post, Media } from '../payload-types'
+import { headingsFromLexical } from '../lib/content'
+import { dateLabel } from '../lib/posts'
+import { RichText } from './RichText'
+import { ArticleTools } from './ArticleTools'
+
+export function Article({ post, preview = false, previous, next }: { post: Post; preview?: boolean; previous?: Post; next?: Post }) {
+  const cover = post.cover as Media | null
+  const headings = headingsFromLexical(post.content)
+  const neighbors = [{ post: previous, label: '上一篇', rel: 'prev' }, { post: next, label: '下一篇', rel: 'next' }].filter(n => n.post)
+  return <><ArticleTools />{preview && <div className="preview-banner">草稿预览 · 仅管理员可见 <a href={`/admin/collections/posts/${post.id}`}>返回编辑 →</a></div>}<div className="article-shell"><a className="back-link" href="/blog">← 回到所有笔记</a><header className="article-header"><div className="post-meta"><a href={`/blog?category=${encodeURIComponent(post.category)}`}>{post.category}</a>{post.isSample && <span>示例笔记</span>}<span>{post.readingMinutes || 1} 分钟阅读</span></div><h1>{post.title}</h1>{post.excerpt && <p className="article-deck">{post.excerpt}</p>}<div className="author-line"><img src="/assets/favicon.svg" alt="" width="36" height="36" /><div><strong>占轩颖</strong><time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)}</time></div><span className="author-note">认真生活，温柔记录。</span></div></header>{cover?.url && <figure className="article-cover"><img src={cover.url} alt={cover.alt} />{cover.caption && <figcaption>{cover.caption}</figcaption>}</figure>}<div className="article-layout"><aside className="article-toc"><span>这篇文章里</span><nav aria-label="文章目录">{headings.length ? headings.map(h => <a className={h.level > 2 ? 'toc-sub' : ''} key={h.id} href={`#${h.id}`}>{h.text}</a>) : <p>一些值得收藏的小事。</p>}</nav><div className="toc-flower" aria-hidden="true">✳</div><small>慢慢读，慢慢喜欢。</small></aside><article id="article-body"><RichText content={post.content} />{post.tags?.length ? <div className="article-tags">{post.tags.map((tag, i) => <span key={i}># {tag.label}</span>)}</div> : null}<div className="article-end"><span>✳</span><p>谢谢你，愿意听我分享这些小事。</p><small>愿我们都能在平凡里，遇见自己的小美好。</small></div></article></div>{neighbors.length > 0 && <section className="read-next"><span className="small-label">KEEP READING</span><h2>再读一篇吧</h2><div>{neighbors.map(n => <a href={`/blog/${encodeURIComponent(n.post!.slug)}`} key={n.rel} rel={n.rel}><small>{n.label} · {n.post!.category}</small><h3>{n.post!.title}</h3><span>继续阅读 ↗</span></a>)}</div></section>}</div></>
+}

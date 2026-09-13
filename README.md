@@ -1,75 +1,47 @@
 # 轩颖的小世界
 
-占轩颖的个人主页。粉色、兔子、温柔的动态效果，以及实用的日常小工具。
+占轩颖的个人主页与在线写作空间。粉色、兔子、温柔的动画，配上随时能打开的写作间。
 
-在线访问：[轩颖的小世界 · Cloudflare](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/)。
+- [个人主页](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/)
+- [博客与阅读](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/blog)
+- [在线写作后台](https://xuanying-homepage.xuanying-personal-homepage.workers.dev/admin)
 
-## 页面内容
+## 功能
 
-- 个人介绍：21 岁、女生、文员，喜欢王菲和兔子。
-- 音乐角落：王菲主题卡片，链接到网易云音乐搜索。
-- 专注时光：25 分钟专注 / 5 分钟休息，支持开始、暂停、继续和重置。
-- 今日小清单：添加、勾选、删除事项，保存在当前浏览器。
-- 文字小助手：实时统计字符（含空白 / 不含空白）、中文字符、英文单词。
-- 博客笔记：从 Supabase 读取已发布文章；支持阅读全文、分页、空状态和加载重试，已迁入 3 篇示例笔记。
-- 移动端导航、键盘可操作弹窗，以及减少动态效果的无障碍支持。
+主页保留个人介绍、王菲音乐角落、专注计时器、今日清单与文字统计。
 
-## 本地预览
+写作后台采用开源 Payload CMS，提供中文富文本编辑器、自动保存、私密草稿预览、发布与下架、历史版本恢复、分类标签、封面及正文图片库。原有三篇示例笔记已经迁入。阅读页支持搜索、分类、目录、进度条、字号调整、分享、前后篇、RSS 与搜索引擎元数据。
 
-无须安装依赖，也没有构建步骤。在项目目录执行：
+[写作使用说明](docs/writing-guide.md) · [部署与维护](docs/cloudflare-setup.md) · [验证记录](docs/cloudflare-verification.md)
+
+## 开发
+
+需要 Node.js 22 或更新版本。安装依赖，把 `.env.example` 复制成 `.env` 并配置数据库与服务端密钥，然后运行：
 
 ```sh
-python3 -m http.server 4173 --bind 127.0.0.1
+npm ci
+npm run dev
 ```
 
-打开 http://127.0.0.1:4173 。也可以直接打开 `index.html`，本地存储会受浏览器的本地文件策略影响。
+访问 `http://localhost:3000`。`npm test` 检查权限规则、内容安全、图片校验、主页接口及原数据库 RLS；`npm run typecheck` 检查类型；`npm run build:cloudflare` 生成生产 Worker。
 
-## 发布到 Cloudflare
+## 技术与数据
 
-执行 `npm ci` 安装部署工具，然后运行 `npx wrangler login` 完成本机授权。运行 `npm run deploy:cloudflare` 会检查博客功能、构建公开文件并部署到 Cloudflare Workers Static Assets。
+Next.js + Payload + Lexical 提供动态后台和博客，OpenNext 将应用部署到 Cloudflare Workers。Supabase PostgreSQL 的独立 `payload` schema 存储文章、历史和管理员；Hyperdrive 管理生产数据库连接；Supabase Storage 的 `blog-media` bucket 存储公开图片。
 
-当前 Cloudflare 线上地址见上方链接。后续修改页面后执行 `npm run deploy:cloudflare` 更新；在 Supabase 修改文章后无须重新部署。Cloudflare 尚未连接 GitHub 自动部署，现有 GitHub Actions 仍负责 GitHub Pages。
+首页通过 `/api/notes` 读取 CMS 已发布文章。以前的 `public.blog_posts` 表保留为迁移前备份，编辑该旧表不会再更新新博客。数据库密码和服务端密钥不会提交到 Git，也不会打包进网页资源；线上通过 Worker secrets 注入。
 
-完整步骤见 [Cloudflare 部署说明](docs/cloudflare-setup.md)。当前部署的是已有个人主页；Next.js / Payload 在线写作后台尚未接入。
+GitHub Actions 继续发布静态主页镜像到 [GitHub Pages](https://zhanxuanying.github.io/my_page/)，镜像的文章入口连接 Cloudflare 博客。Cloudflare 应用通过 `npm run deploy:cloudflare` 单独发布；推送 GitHub 不会自动更新 Worker。
 
-## 发布到 GitHub Pages
+## 常用文件
 
-项目已提供 `.github/workflows/pages.yml`，发布方式：
+| 文件 | 用途 |
+| --- | --- |
+| `index.html`、`styles.css`、`app.js` | 原个人主页、动画与工具 |
+| `blog.js`、`cms-config.js` | 主页博客接口与文章卡片 |
+| `src/app/(blog)`、`src/components` | 博客列表、阅读页和组件 |
+| `src/collections`、`src/payload.config.ts` | 后台数据模型、权限与编辑器 |
+| `src/storage`、`src/migrations` | 图片存储、数据库迁移 |
+| `wrangler.jsonc`、`scripts/build-cloudflare.mjs` | Cloudflare 配置与生产构建 |
 
-1. 将这些文件提交并推送到仓库的 `main` 分支。
-2. 在 GitHub 仓库的 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-3. 在 **Actions** 中运行 **Deploy personal homepage to GitHub Pages**。之后向 `main` 推送会自动部署。
-4. 工作流完成后，从部署结果打开实际的 Pages 地址。本仓库通常对应 `https://zhanxuanying.github.io/my_page/`。
-
-所有资源使用相对路径，适配仓库子目录。工作流版本及权限配置参考 [GitHub Pages 官方文档](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
-
-## 修改内容
-
-| 文件                    | 用途                                   |
-| ----------------------- | -------------------------------------- |
-| `index.html`            | 个人介绍、区块标题、文章卡片、音乐链接 |
-| `styles.css`            | 配色、排版、响应式与动画               |
-| `app.js`                | 工具逻辑、文章列表和阅读弹窗           |
-| `blog.js`               | Supabase 读取、安全的正文和卡片渲染    |
-| `blog-data.js`          | 仅未配置数据库时使用的本地示例         |
-| `supabase-config.js`    | 项目 URL 和公开的 publishable key      |
-| `assets/bunny-hero.png` | 兔子主视觉                             |
-| `assets/favicon.svg`    | 兔子网站图标                           |
-
-更换博客时，在 [Supabase 后台](https://supabase.com/dashboard/project/bclkpczvgzmraytxqdfv/editor) 的 `blog_posts` 表中编辑并保存，刷新主页即可看到更新。发布、下架和正文格式见 [博客后台使用说明](docs/supabase-setup.md)。
-
-开发检查：`npm ci --ignore-scripts` 后执行 `npm test`。测试在真实 PostgreSQL 引擎 PGlite 中检查 RLS 与写入限制，并验证前端请求、分页、空数据、错误和文本转义。GitHub Pages 工作流会先运行这些检查。
-
-## 数据与使用边界
-
-待办事项只存储于当前浏览器；不跨设备同步。清理浏览器数据会清除清单。浏览器禁止存储时，页面会提示仅保留本次会话。
-
-计时器在当前页面内运行，关闭弹窗仍会继续；刷新或关闭页面会重置。文字统计不发送网络请求，关闭弹窗保留当前草稿，刷新后清空。
-
-本页面不会自动播放音乐，也不包含任何受版权保护的歌曲音频。博客会请求 Supabase Data API；音乐入口链接至音乐网站。主视觉已放入本地资源，无外部图片加载依赖。
-
-## 主视觉来源
-
-兔子插画由内置 ImageGen 为此主页生成，已保存至 `assets/bunny-hero.png`。
-
-创作提示：一只软绒绒的白兔坐在淡粉色软垫和矮台上，右上方伸入少量樱花，温柔日光与细腻阴影，极简奶白与玫瑰粉摄影棚，精致可爱的绒感立体插画；正方形构图，无文字、标志或界面元素。
+待办只保存在当前浏览器；计时器刷新后重置；文字统计不发送网络请求。主页不自动播放音乐，不包含歌曲音频。兔子插画由 ImageGen 为此主页生成，保存于 `assets/bunny-hero.png`。

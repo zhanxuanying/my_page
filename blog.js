@@ -44,6 +44,11 @@
   }
 
   function parseConfig(config = {}) {
+    if (config.cmsURL) {
+      const cmsURL = String(config.cmsURL).replace(/\/$/, '');
+      if (!/^https:\/\/xuanying-homepage\.xuanying-personal-homepage\.workers\.dev$/.test(cmsURL) && !/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(cmsURL)) throw new Error('博客地址配置不正确。');
+      return { cmsURL };
+    }
     const url = String(config.url || "")
       .trim()
       .replace(/\/$/, "");
@@ -113,7 +118,10 @@
       ? post.cover_theme
       : "journal";
     const [label, title, caption, decoration, symbol, icon] = themes[theme];
-    return `<button class="note-card" type="button" data-note="${escapeHTML(post.slug)}" aria-haspopup="dialog"><span class="note-cover cover-${theme}"><span class="cover-label">${label}</span><span class="cover-title">${title}<span class="cover-${decoration}" aria-hidden="true">${symbol}</span></span><span class="cover-bottom"><span>${caption}</span><svg class="icon" aria-hidden="true"><use href="#i-${icon}" /></svg></span></span><span class="note-category">${escapeHTML(post.category)} <span>· ${escapeHTML(post.reading_minutes)} 分钟阅读</span></span><h3>${escapeHTML(post.title)}</h3><p>${escapeHTML(post.excerpt)}</p><span class="note-read">翻开这篇笔记 <svg class="icon" aria-hidden="true"><use href="#i-up-right" /></svg></span></button>`;
+    const url = typeof post.article_url === 'string' && /^(https:\/\/xuanying-homepage\.xuanying-personal-homepage\.workers\.dev|http:\/\/(localhost|127\.0\.0\.1):\d+)\/blog\/[a-z0-9-]+$/.test(post.article_url) ? post.article_url : '';
+    const opening = url ? `<a class="note-card" href="${escapeHTML(url)}">` : `<button class="note-card" type="button" data-note="${escapeHTML(post.slug)}" aria-haspopup="dialog">`;
+    const imageURL = typeof post.cover_url === 'string' && /^https:\/\/bclkpczvgzmraytxqdfv\.supabase\.co\/storage\/v1\/object\/public\/blog-media\//.test(post.cover_url) ? post.cover_url : '';
+    return `${opening}<span class="note-cover cover-${theme}">${imageURL ? `<img class="note-cover-image" src="${escapeHTML(imageURL)}" alt="" loading="lazy">` : `<span class="cover-label">${label}</span><span class="cover-title">${title}<span class="cover-${decoration}" aria-hidden="true">${symbol}</span></span><span class="cover-bottom"><span>${caption}</span><svg class="icon" aria-hidden="true"><use href="#i-${icon}" /></svg></span>`}</span><span class="note-category">${escapeHTML(post.category)} <span>· ${escapeHTML(post.reading_minutes)} 分钟阅读</span></span><h3>${escapeHTML(post.title)}</h3><p>${escapeHTML(post.excerpt)}</p><span class="note-read">翻开这篇笔记 <svg class="icon" aria-hidden="true"><use href="#i-up-right" /></svg></span></${url ? 'a' : 'button'}>`;
   }
 
   async function loadPosts(
@@ -125,6 +133,13 @@
     if (!config) throw new Error("Supabase 尚未配置。");
     if (!Number.isSafeInteger(offset) || offset < 0)
       throw new Error("无效的分页位置。");
+    if (config.cmsURL) {
+      const response = await request(`${config.cmsURL}/api/notes?offset=${offset}`, { headers: { Accept: 'application/json' }, cache: 'no-store', signal: AbortSignal.timeout(20000) });
+      if (!response.ok) throw new Error(`笔记读取失败（${response.status}）。`);
+      const result = await response.json();
+      if (!Array.isArray(result.posts) || typeof result.hasMore !== 'boolean' || result.posts.some(p => !p || !['slug','title','excerpt','category','cover_theme','article_url'].every(k => typeof p[k] === 'string') || !Number.isInteger(p.reading_minutes))) throw new Error('笔记数据格式不正确。');
+      return result;
+    }
     const url = new URL(`${config.url}/rest/v1/blog_posts`);
     url.search = new URLSearchParams({
       select:

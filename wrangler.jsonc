@@ -1,8 +1,27 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "xuanying-homepage",
-  "compatibility_date": "2026-09-12",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-13",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
   "assets": {
-    "directory": "./_site"
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "20af5d09178646d1a02bc280d0bc096e"
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://xuanying-homepage.xuanying-personal-homepage.workers.dev",
+    "SUPABASE_URL": "https://bclkpczvgzmraytxqdfv.supabase.co"
+  },
+  "observability": {
+    "enabled": true
   }
 }

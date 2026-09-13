@@ -1,0 +1,25 @@
+:root {
+  --theme-success-500: #4b7d68;
+  --theme-elevation-0: #fffafb;
+  --theme-elevation-50: #faf2f5;
+  --theme-elevation-100: #f1e3e8;
+  --theme-elevation-150: #ebd9e0;
+  --theme-text: #40343a;
+  --style-radius-s: 6px;
+  --style-radius-m: 12px;
+  --font-body: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.writing-brand { display:flex; align-items:center; gap:14px; font-size:25px; font-weight:700; color:#a24969; }
+.writing-brand small { display:block; margin-top:7px; font-size:12px; font-weight:400; color:#9b7b88; }
+.writing-welcome { margin-bottom:36px; padding:36px; border:1px solid #edd9e1; border-radius:20px; background:linear-gradient(120deg,#fff4f7,#f8edec); display:flex; gap:36px; align-items:center; justify-content:space-between; }
+.writing-kicker { font-size:10px; letter-spacing:2px; color:#a66c82; }
+.writing-welcome h1 { font-size:30px; margin:12px 0; letter-spacing:-1px; }
+.writing-welcome p { color:#876c78; line-height:1.8; }
+.writing-new { display:inline-block; padding:12px 20px; margin-top:10px; background:#ac5778; color:white; border-radius:8px; text-decoration:none; }
+.writing-visit { display:inline-block; margin-left:20px; color:#8c5066; text-decoration:none; }
+.writing-hint { border-left:1px solid #e5cbd5; padding-left:28px; font-size:12px; }
+.writing-hint > span { font-size:13px; font-weight:600; }
+.writing-login-note { text-align:center; color:#977784; font-size:13px; margin-bottom:24px; }
+@media(max-width:760px) { .writing-welcome { padding:24px; display:block; } .writing-hint { border-left:0; border-top:1px solid #e5cbd5; margin-top:24px; padding:18px 0 0; } }
+html[data-theme='dark'] .writing-welcome { background:#30252d; border-color:#55434f; }
+html[data-theme='dark'] .writing-welcome h1 { color:#fbeaf1; }

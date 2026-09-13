@@ -353,7 +353,7 @@ async function fetchNotes() {
     notesCount.textContent = "正在读取";
   }
   try {
-    const result = await blog.loadPosts(window.SUPABASE_CONFIG, nextBlogOffset);
+    const result = await blog.loadPosts(window.CMS_CONFIG || window.SUPABASE_CONFIG, nextBlogOffset);
     renderNotes(result.posts, nextBlogOffset > 0);
     nextBlogOffset += result.posts.length;
     notesMore.hidden = !result.hasMore;
@@ -386,7 +386,7 @@ notesGrid.addEventListener("click", (event) => {
 });
 
 try {
-  if (blog.parseConfig(window.SUPABASE_CONFIG)) fetchNotes();
+  if (blog.parseConfig(window.CMS_CONFIG || window.SUPABASE_CONFIG)) fetchNotes();
   else renderNotes(window.SAMPLE_BLOG_POSTS);
 } catch {
   fetchNotes();

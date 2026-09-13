@@ -11,6 +11,7 @@ const publicFiles = [
   'blog.js',
   'blog-data.js',
   'supabase-config.js',
+  'cms-config.js',
   '.nojekyll',
   'assets',
 ];

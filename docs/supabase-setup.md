@@ -1,4 +1,6 @@
-# 博客后台使用说明
+# 旧版 Supabase 表维护记录
+
+> 2026-09-13 已升级为 Payload 在线写作后台。日常写作请使用 [新后台说明](writing-guide.md)。下文仅记录迁移前 `public.blog_posts` 表；该旧表仍保留，修改它不会更新新站点。
 
 主页：[轩颖的小世界](https://zhanxuanying.github.io/my_page/)
 

@@ -6,7 +6,12 @@ const {
   renderBody,
   renderCard,
   loadPosts,
-} = require("../blog.js");
+} = (() => {
+  const vm = require("node:vm");
+  const context = { module: { exports: {} }, fetch, URL, URLSearchParams, AbortController, AbortSignal, setTimeout, clearTimeout };
+  vm.runInNewContext(require("node:fs").readFileSync(require("node:path").join(__dirname, "../blog.js"), "utf8"), context);
+  return context.module.exports;
+})();
 const config = {
   url: "https://abcdefghijklmnopqrst.supabase.co",
   publishableKey: "sb_publishable_test123456789",
@@ -22,9 +27,27 @@ const post = {
   is_sample: false,
 };
 
+test("homepage CMS requests link to full articles without credentials", async () => {
+  const cmsURL = 'https://xuanying-homepage.xuanying-personal-homepage.workers.dev';
+  const article = { ...post, article_url: `${cmsURL}/blog/hello` };
+  let request;
+  const result = await loadPosts({ cmsURL }, 6, async (url, options) => {
+    request = { url: new URL(url), options };
+    return new Response(JSON.stringify({ posts: [article], hasMore: false }));
+  });
+  assert.equal(request.url.pathname, '/api/notes');
+  assert.equal(request.url.searchParams.get('offset'), '6');
+  assert.equal(request.options.headers.Authorization, undefined);
+  assert.equal(request.options.headers.apikey, undefined);
+  assert.equal(result.posts[0].title, post.title);
+  assert.match(renderCard(result.posts[0]), /<a class="note-card" href="https:\/\/xuanying-homepage/);
+  assert.throws(() => parseConfig({ cmsURL: 'https://attacker.example' }));
+  await assert.rejects(() => loadPosts({ cmsURL }, 0, async () => new Response('{}')));
+});
+
 test("only a complete public-key configuration can enable remote mode", () => {
   assert.equal(parseConfig({ url: "", publishableKey: "" }), null);
-  assert.deepEqual(parseConfig({ ...config, url: config.url + "/" }), config);
+  assert.deepEqual({ ...parseConfig({ ...config, url: config.url + "/" }) }, config);
   for (const bad of [
     { url: config.url },
     { publishableKey: config.publishableKey },
@@ -88,7 +111,8 @@ test("API request uses the public key and provides a stable next page", async ()
 
 test("an empty database stays empty without silently showing sample articles", async () => {
   const result = await loadPosts(config, 0, async () => new Response("[]"));
-  assert.deepEqual(result, { posts: [], hasMore: false });
+  assert.equal(result.posts.length, 0);
+  assert.equal(result.hasMore, false);
 });
 
 test("network, permission, and malformed-data failures are exposed for retry", async () => {

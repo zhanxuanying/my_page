@@ -3,13 +3,48 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "node --test tests/*.test.cjs",
-    "build": "node scripts/build-static.mjs",
-    "preview:cloudflare": "npm run build && wrangler dev",
-    "deploy:cloudflare": "npm test && npm run build && wrangler deploy"
+    "dev": "node scripts/prepare-app.mjs && next dev --webpack",
+    "test": "node --test tests/*.test.cjs && tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "build:static": "node scripts/build-static.mjs",
+    "build": "node scripts/prepare-app.mjs && next build --webpack",
+    "build:cloudflare": "node scripts/build-cloudflare.mjs",
+    "preview:cloudflare": "npm run build:cloudflare && node scripts/cloudflare-command.mjs preview",
+    "deploy:cloudflare": "npm test && npm run typecheck && npm run build:cloudflare && node scripts/cloudflare-command.mjs deploy",
+    "payload": "payload",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
+    "migrate": "payload migrate",
+    "import:posts": "tsx scripts/import-posts.ts",
+    "admin:account": "tsx scripts/admin-account.ts",
+    "verify:cms": "node scripts/verify-cms.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
+    "@types/node": "22.19.0",
+    "@types/pg": "8.15.6",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "tsx": "4.20.6",
+    "typescript": "5.7.3",
     "wrangler": "4.131.1"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "1.20.6",
+    "@payloadcms/db-postgres": "3.89.0",
+    "@payloadcms/next": "3.89.0",
+    "@payloadcms/plugin-cloud-storage": "3.89.0",
+    "@payloadcms/richtext-lexical": "3.89.0",
+    "@payloadcms/translations": "3.89.0",
+    "graphql": "16.11.0",
+    "next": "16.3.5",
+    "payload": "3.89.0",
+    "pg": "8.16.3",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "type": "module",
+  "overrides": {
+    "dompurify": "3.4.15"
   }
 }

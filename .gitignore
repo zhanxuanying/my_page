@@ -12,3 +12,9 @@ _site/
 .wrangler/
 .dev.vars
 .dev.vars.*
+
+.next/
+.open-next/
+public/
+src/generated/
+*.tsbuildinfo
