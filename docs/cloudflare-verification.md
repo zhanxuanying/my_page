@@ -32,6 +32,8 @@
 - 阅读页渲染正式内容和 JSON-LD，RSS 可读取。
 - 验证文章及图片在结束后删除。
 
+另以浏览器使用的 Cookie 登录方式验证正式站点：Secure / HttpOnly 会话 Cookie、`users/me` 会话识别，以及需要登录且禁止索引的草稿预览均通过。
+
 检查结束后数据库仅保留一个正式管理员、三篇原始文章和零张测试图片；用于 UI 验证的临时账号和草稿也已删除。逐字段核对原 `public.blog_posts` 与迁移前备份，内容未改变。`anon` 和 `authenticated` 没有 `payload` schema 访问权，CMS 角色不具备 superuser / createdb / createrole 权限。
 
 ## 页面检查
@@ -41,6 +43,10 @@
 正式站点通过实际 HTTPS 检查主页、博客、阅读页、后台页面、RSS 和 sitemap；主页与公开静态文件一致，旧路径的 `.env`、`package.json`、`README.md` 均返回 404。后台登录界面在客户端渲染，不以服务端 HTML 是否含密码输入框作为可用性标准。
 
 线上浏览器自动化连接超时，因此没有把本地视觉验收表述为线上浏览器验收。线上写作流程的证据是实际 Cloudflare API 读写、持久图片读取以及 12 个脚本/样式文件的逐字节产物校验。GitHub Pages 来源的主页 API 请求也通过 CORS 检查。
+
+## 代码同步与静态镜像
+
+实现提交 `b498f1c` 已使用仓库配置的第二把 SSH key 推送到 `main`。[GitHub Pages 工作流](https://github.com/zhanxuanying/my_page/actions/runs/34766731478) 成功完成；在线镜像的主页、CMS 配置和文章客户端与已提交文件一致。
 
 ## 已知边界
 
